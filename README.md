@@ -242,8 +242,10 @@ Triggers:
 
 ## Additional Documentation
 
+- [Quick Deploy Guide](GUIDA_RAPIDA.md) - Brief deployment flow and procedures (start here)
+- [Deployment Guide](docs/DEPLOYMENT.md) - Detailed deployment procedures
 - [Action Plan](piano_azione.md) - Complete project roadmap
-- [Deployment Guide](docs/DEPLOYMENT.md) - Detailed deployment guide
+- [Compliance Checklist](CHECKLIST_TRACCIA.md) - Requirements verification
 
 ## Issues and Support
 
