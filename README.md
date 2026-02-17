@@ -36,6 +36,9 @@ brightflow-digital/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml              # CI/CD Pipeline
+├── docs/
+│   ├── QUICK_START.md          # Quick deployment guide
+│   └── DEPLOYMENT.md           # Complete deployment guide
 ├── docker/
 │   └── mongodb/
 │       ├── docker-compose.yml  # Local MongoDB setup
@@ -48,20 +51,29 @@ brightflow-digital/
 │   │   ├── api/
 │   │   │   └── services/
 │   │   │       ├── route.ts    # Services API endpoint
-│   │   │       └── route.test.ts
-│   │   ├── layout.tsx          # Main layout
-│   │   └── page.tsx            # Homepage
+│   │   │       └── route.test.ts  # API integration tests
+│   │   ├── layout.tsx          # Main layout with Analytics
+│   │   └── page.tsx            # Homepage with ISR
 │   ├── lib/
-│   │   └── mongodb.ts          # MongoDB connection
-│   └── models/
-│       ├── Service.ts          # Services schema
-│       ├── Client.ts           # Clients schema
-│       └── __tests__/
-│           └── Service.test.ts
+│   │   └── mongodb.ts          # MongoDB connection with caching
+│   ├── models/
+│   │   ├── Service.ts          # Services schema
+│   │   ├── Client.ts           # Clients schema
+│   │   └── __tests__/
+│   │       └── Service.test.ts # Model unit tests
+│   └── types/
+│       └── index.ts            # TypeScript type definitions
 ├── .env.local                  # Environment variables (not committed)
+├── .gitignore                  # Git ignore rules
+├── eslint.config.mjs           # ESLint 9 flat config
 ├── jest.config.js              # Jest configuration
-├── vercel.json                 # Vercel configuration
-└── tsconfig.json               # TypeScript configuration
+├── jest.setup.ts               # Jest setup file
+├── next.config.ts              # Next.js configuration
+├── package.json                # Dependencies and scripts
+├── piano_azione.md             # Project action plan
+├── README.md                   # This file
+├── tsconfig.json               # TypeScript configuration
+└── vercel.json                 # Vercel deployment config
 ```
 
 ## Getting Started
@@ -242,10 +254,9 @@ Triggers:
 
 ## Additional Documentation
 
-- [Quick Deploy Guide](GUIDA_RAPIDA.md) - Brief deployment flow and procedures (start here)
+- [Quick Start Guide](docs/QUICK_START.md) - Brief deployment flow and procedures (start here)
 - [Deployment Guide](docs/DEPLOYMENT.md) - Detailed deployment procedures
 - [Action Plan](piano_azione.md) - Complete project roadmap
-- [Compliance Checklist](CHECKLIST_TRACCIA.md) - Requirements verification
 
 ## Issues and Support
 

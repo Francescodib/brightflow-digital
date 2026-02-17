@@ -229,8 +229,7 @@ git pull origin develop  # Update from remote
 ---
 
 **For detailed procedures, refer to:**
-- Complete deployment guide: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
-- Full project documentation: [README.md](README.md)
-- Compliance checklist: [CHECKLIST_TRACCIA.md](CHECKLIST_TRACCIA.md)
+- Complete deployment guide: [DEPLOYMENT.md](DEPLOYMENT.md)
+- Full project documentation: [../README.md](../README.md)
 
 **Project maintained by Francesco di Biase** | BrightFlow Digital - 2026
