@@ -3,7 +3,6 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["iad1", "fra1", "syd1"],
   "functions": {
     "src/app/api/**/*.ts": {
       "memory": 1024,
