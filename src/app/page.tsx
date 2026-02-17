@@ -46,7 +46,7 @@ export default async function Home() {
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
             Consulenza e sviluppo digitale personalizzati per piccole e medie imprese.
-            Trasformiamo le tue idee in soluzioni scalabili e performanti.
+            Trasformiamo le tue idee in soluzioni scalabili e performanti .
           </p>
           <div className="mt-10 flex items-center justify-center gap-4">
             <a
