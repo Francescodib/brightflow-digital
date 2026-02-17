@@ -1,7 +1,6 @@
 /**
  * @jest-environment node
  */
-import mongoose from 'mongoose';
 import Service from '../Service';
 
 describe('Service Model', () => {

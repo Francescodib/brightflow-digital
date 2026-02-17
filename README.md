@@ -1,36 +1,265 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BrightFlow Digital - Scalable Web Platform
+
+> A modern, scalable web application demonstrating professional deployment practices on Vercel with Next.js, TypeScript, and MongoDB.
+
+**Author:** Francesco di Biase
+
+## Technology Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Runtime:** React 19
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS 4
+- **Database:** MongoDB 8 (Atlas in production, Docker in development)
+- **ODM:** Mongoose
+- **Deployment:** Vercel (Edge Network)
+- **Analytics:** Vercel Analytics
+- **Testing:** Jest + React Testing Library
+- **CI/CD:** GitHub Actions
+
+## Features
+
+- **ISR (Incremental Static Regeneration)** - Automatic revalidation every hour
+- **Edge Network** - Global distribution with Vercel
+- **Security Headers** - HSTS, X-Frame-Options, CSP
+- **Real-time Analytics** - Monitoring with Vercel Analytics
+- **Test Coverage** - Complete unit and integration test suite
+- **CI/CD Pipeline** - Automatic deployment with GitHub Actions
+- **Responsive Design** - Optimized for all devices
+- **Image Optimization** - AVIF and WebP with Next.js Image
+- **Docker Support** - Containerized development environment
+
+## Project Structure
+
+```
+brightflow-digital/
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # CI/CD Pipeline
+├── docker/
+│   └── mongodb/
+│       ├── docker-compose.yml  # Local MongoDB setup
+│       └── seed/
+│           └── init.js         # Initial seed data
+├── scripts/
+│   └── seed-atlas.ts           # MongoDB Atlas seed
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── services/
+│   │   │       ├── route.ts    # Services API endpoint
+│   │   │       └── route.test.ts
+│   │   ├── layout.tsx          # Main layout
+│   │   └── page.tsx            # Homepage
+│   ├── lib/
+│   │   └── mongodb.ts          # MongoDB connection
+│   └── models/
+│       ├── Service.ts          # Services schema
+│       ├── Client.ts           # Clients schema
+│       └── __tests__/
+│           └── Service.test.ts
+├── .env.local                  # Environment variables (not committed)
+├── jest.config.js              # Jest configuration
+├── vercel.json                 # Vercel configuration
+└── tsconfig.json               # TypeScript configuration
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 20+
+- npm or yarn
+- Docker (for local development)
+- MongoDB Atlas account (for production)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/[your-username]/brightflow-digital.git
+   cd brightflow-digital
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Setup local MongoDB**
+   ```bash
+   cd docker/mongodb
+   docker-compose up -d
+   cd ../..
+   ```
+
+4. **Configure environment variables**
+
+   Create a `.env.local` file in the root:
+   ```env
+   # MongoDB Atlas (production)
+   MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/brightflow?retryWrites=true&w=majority
+
+   # Local MongoDB (development)
+   # MONGODB_URI=mongodb://admin:dev_password_123@localhost:27017/brightflow?authSource=admin
+   ```
+
+5. **Seed the database (optional)**
+   ```bash
+   # For MongoDB Atlas
+   npm run seed:atlas
+   ```
+
+6. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) to see the application.
+
+## Testing
+
+### Run all tests
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Watch mode for development
+```bash
+npm run test:watch
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Coverage report
+```bash
+npm run test:coverage
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Available tests
+- **Unit tests:** 10 tests for Service model
+- **Integration tests:** 4 tests for API endpoints
+- **Coverage:** ~90% code coverage
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+### Deploying to Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Connect GitHub repository to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Import GitHub repository
+   - Framework preset: Next.js (auto-detected)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Configure environment variables**
+   - Settings → Environment Variables
+   - Add `MONGODB_URI` for Production and Preview
 
-## Deploy on Vercel
+3. **Branch configuration**
+   - **Production:** `main` branch
+   - **Preview:** `develop` branch
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Automatic deployment**
+   - Push to `main` → Production deployment
+   - Push to `develop` → Preview deployment
+   - Pull Request → Temporary deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### GitFlow Workflow
+
+```bash
+# Develop a new feature
+git checkout develop
+git checkout -b feature/feature-name
+git add .
+git commit -m "feat: feature description"
+git push origin feature/feature-name
+
+# Merge to develop (after PR approval)
+git checkout develop
+git merge feature/feature-name
+git push origin develop
+
+# Release to production
+git checkout main
+git merge develop
+git push origin main
+```
+
+## Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run type-check` | TypeScript type checking |
+| `npm run format` | Format code with Prettier |
+| `npm run format:check` | Check code formatting |
+| `npm test` | Run all tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Generate coverage report |
+| `npm run seed:atlas` | Seed MongoDB Atlas |
+
+## Environment Variables
+
+### Development (`.env.local`)
+```env
+MONGODB_URI=mongodb://admin:dev_password_123@localhost:27017/brightflow?authSource=admin
+```
+
+### Production (Vercel Dashboard)
+```env
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/brightflow?retryWrites=true&w=majority
+```
+
+## Performance
+
+- **ISR:** Revalidation every 3600 seconds (1 hour)
+- **Image Optimization:** Automatic with Next.js Image
+- **Code Splitting:** Automatic with App Router
+- **Edge Runtime:** Global distribution
+- **Serverless Functions:** 1024MB RAM, 10s max duration
+
+## Security
+
+- **HSTS:** Strict-Transport-Security header
+- **XSS Protection:** X-Frame-Options, X-Content-Type-Options
+- **CSP:** Content-Security-Policy configured
+- **Environment Variables:** Securely managed on Vercel
+- **MongoDB Connection:** Pooling with global cache
+
+## CI/CD Pipeline
+
+The GitHub Actions pipeline automatically runs:
+
+1. **Lint & Type Check** - Code quality verification
+2. **Tests** - Complete test suite execution
+3. **Build** - Application compilation
+4. **Coverage** - Report upload to Codecov (optional)
+5. **Deploy Status** - Deployment information display
+
+Triggers:
+- Push to `main` or `develop`
+- Pull Request to `main` or `develop`
+
+## Additional Documentation
+
+- [Action Plan](piano_azione.md) - Complete project roadmap
+- [Deployment Guide](docs/DEPLOYMENT.md) - Detailed deployment guide
+
+## Issues and Support
+
+To report bugs or request new features, open an [issue](https://github.com/[your-username]/brightflow-digital/issues) on GitHub.
+
+## License
+
+Demonstrative project - © 2026 Francesco di Biase
+
+## Acknowledgments
+
+- [Next.js](https://nextjs.org) - React Framework
+- [Vercel](https://vercel.com) - Deployment Platform
+- [MongoDB](https://www.mongodb.com) - NoSQL Database
+- [Tailwind CSS](https://tailwindcss.com) - CSS Framework
+
+---
+
+**Developed by Francesco di Biase** | Demonstration of scalable deployment on Vercel

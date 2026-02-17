@@ -1,28 +1,28 @@
 /**
- * Script per popolare MongoDB Atlas con dati seed
- * Esegui: npm run seed:atlas
+ * Script to populate MongoDB Atlas with seed data
+ * Run: npm run seed:atlas
  */
 
 import { config } from 'dotenv';
 import { resolve } from 'path';
 import mongoose from 'mongoose';
 
-// Carica variabili d'ambiente da .env.local
+// Load environment variables from .env.local
 config({ path: resolve(process.cwd(), '.env.local') });
 
-// Leggi MONGODB_URI dalle variabili d'ambiente
+// Read MONGODB_URI from environment variables
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  console.error('❌ MONGODB_URI non trovata nelle variabili d\'ambiente');
-  console.log('💡 Assicurati di avere .env.local con la connection string di MongoDB Atlas');
+  console.error('ERROR: MONGODB_URI not found in environment variables');
+  console.log('Make sure you have .env.local with MongoDB Atlas connection string');
   process.exit(1);
 }
 
 const servicesData = [
   {
-    title: 'Consulenza Digitale',
-    description: 'Strategie digitali personalizzate per PMI',
+    title: 'Digital Consulting',
+    description: 'Customized digital strategies for SMEs',
     category: 'consulting',
     price: 1500,
     active: true,
@@ -30,8 +30,8 @@ const servicesData = [
     updatedAt: new Date(),
   },
   {
-    title: 'Sviluppo Web',
-    description: 'Siti web e applicazioni su misura',
+    title: 'Web Development',
+    description: 'Custom websites and applications',
     category: 'development',
     price: 3000,
     active: true,
@@ -40,7 +40,7 @@ const servicesData = [
   },
   {
     title: 'Marketing Automation',
-    description: 'Automazione processi marketing',
+    description: 'Marketing process automation',
     category: 'marketing',
     price: 2000,
     active: true,
@@ -49,7 +49,7 @@ const servicesData = [
   },
   {
     title: 'SEO & Analytics',
-    description: 'Ottimizzazione motori di ricerca e analisi dati',
+    description: 'Search engine optimization and data analysis',
     category: 'marketing',
     price: 1800,
     active: true,
@@ -87,46 +87,46 @@ const clientsData = [
 
 async function seedDatabase() {
   try {
-    console.log('🔌 Connessione a MongoDB Atlas...');
+    console.log('Connecting to MongoDB Atlas...');
     await mongoose.connect(MONGODB_URI);
-    console.log('✅ Connesso a MongoDB Atlas!');
+    console.log('Connected to MongoDB Atlas!');
 
-    // Ottieni riferimenti alle collections
+    // Get collections references
     const db = mongoose.connection.db;
     if (!db) {
-      throw new Error('Database non disponibile');
+      throw new Error('Database not available');
     }
 
-    // Pulisci le collections esistenti
-    console.log('\n🧹 Pulizia collections esistenti...');
+    // Clean existing collections
+    console.log('\nCleaning existing collections...');
     await db.collection('services').deleteMany({});
     await db.collection('clients').deleteMany({});
-    console.log('✅ Collections pulite');
+    console.log('Collections cleaned');
 
-    // Inserisci i servizi
-    console.log('\n📊 Inserimento servizi...');
+    // Insert services
+    console.log('\nInserting services...');
     const servicesResult = await db.collection('services').insertMany(servicesData);
-    console.log(`✅ ${servicesResult.insertedCount} servizi inseriti`);
+    console.log(`${servicesResult.insertedCount} services inserted`);
 
-    // Inserisci i clienti
-    console.log('\n👥 Inserimento clienti...');
+    // Insert clients
+    console.log('\nInserting clients...');
     const clientsResult = await db.collection('clients').insertMany(clientsData);
-    console.log(`✅ ${clientsResult.insertedCount} clienti inseriti`);
+    console.log(`${clientsResult.insertedCount} clients inserted`);
 
-    // Verifica
-    console.log('\n🔍 Verifica dati inseriti:');
+    // Verify
+    console.log('\nVerifying inserted data:');
     const servicesCount = await db.collection('services').countDocuments();
     const clientsCount = await db.collection('clients').countDocuments();
-    console.log(`   📦 Services: ${servicesCount}`);
-    console.log(`   👤 Clients: ${clientsCount}`);
+    console.log(`   Services: ${servicesCount}`);
+    console.log(`   Clients: ${clientsCount}`);
 
-    console.log('\n✨ Seed completato con successo!');
+    console.log('\nSeed completed successfully!');
   } catch (error) {
-    console.error('\n❌ Errore durante il seed:', error);
+    console.error('\nError during seed:', error);
     process.exit(1);
   } finally {
     await mongoose.connection.close();
-    console.log('\n👋 Connessione chiusa');
+    console.log('\nConnection closed');
   }
 }
 
