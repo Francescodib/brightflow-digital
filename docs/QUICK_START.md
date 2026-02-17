@@ -44,8 +44,12 @@ Local Development → Git Push → GitHub Actions (CI) → Vercel (CD) → Produ
 
 ### Environment Variables
 
-**Local (.env.local):**
-```env
+**Local Setup:**
+```bash
+# Copy the example file
+cp .env.local.example .env.local
+
+# Edit .env.local with your MongoDB connection
 MONGODB_URI=mongodb://admin:dev_password_123@localhost:27017/brightflow?authSource=admin
 ```
 

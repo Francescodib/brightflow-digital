@@ -63,7 +63,7 @@ brightflow-digital/
 │   │       └── Service.test.ts # Model unit tests
 │   └── types/
 │       └── index.ts            # TypeScript type definitions
-├── .env.local                  # Environment variables (not committed)
+├── .env.local.example          # Environment variables template
 ├── .gitignore                  # Git ignore rules
 ├── eslint.config.mjs           # ESLint 9 flat config
 ├── jest.config.js              # Jest configuration
@@ -107,14 +107,12 @@ brightflow-digital/
 
 4. **Configure environment variables**
 
-   Create a `.env.local` file in the root:
-   ```env
-   # MongoDB Atlas (production)
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/brightflow?retryWrites=true&w=majority
-
-   # Local MongoDB (development)
-   # MONGODB_URI=mongodb://admin:dev_password_123@localhost:27017/brightflow?authSource=admin
+   Copy the example file and configure your MongoDB connection:
+   ```bash
+   cp .env.local.example .env.local
    ```
+
+   Then edit `.env.local` and replace placeholder values with your actual credentials.
 
 5. **Seed the database (optional)**
    ```bash
@@ -212,6 +210,8 @@ git push origin main
 
 ## Environment Variables
 
+A template file `.env.local.example` is provided with all required variables.
+
 ### Development (`.env.local`)
 ```env
 MONGODB_URI=mongodb://admin:dev_password_123@localhost:27017/brightflow?authSource=admin
@@ -221,6 +221,8 @@ MONGODB_URI=mongodb://admin:dev_password_123@localhost:27017/brightflow?authSour
 ```env
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/brightflow?retryWrites=true&w=majority
 ```
+
+**Setup:** Copy `.env.local.example` to `.env.local` and replace placeholder values with your credentials.
 
 ## Performance
 
