@@ -1,0 +1,17 @@
+services:
+  mongodb:
+    image: mongo:8
+    container_name: brightflow-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: admin
+      MONGODB_INITDB_ROOT_PASSWORD: dev_password_123
+      MONGODB_INITDB_DATABASE: brightflow
+    volumes:
+      - mongodb_data:/data/db
+      - ./seed:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
