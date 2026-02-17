@@ -87,13 +87,6 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI_CI }}
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: .next
-          retention-days: 1
-
   deploy-status:
     name: Deployment Status
     runs-on: ubuntu-latest
@@ -104,11 +97,11 @@ jobs:
       - name: Production deployment info
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "✅ CI passed - Production deploy triggered on Vercel"
+          echo "CI passed - Production deploy triggered on Vercel"
           echo "Branch: main"
 
       - name: Preview deployment info
         if: github.ref == 'refs/heads/develop'
         run: |
-          echo "✅ CI passed - Preview deploy triggered on Vercel"
+          echo "CI passed - Preview deploy triggered on Vercel"
           echo "Branch: develop"
