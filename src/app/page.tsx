@@ -2,7 +2,7 @@ import connectDB from '@/lib/mongodb';
 import Service from '@/models/Service';
 import type { IService } from '@/types';
 
-export const revalidate = 3600; // Revalidate ogni ora
+export const revalidate = 3600; // Revalidate every hour
 
 async function getServices(): Promise<IService[]> {
   try {
@@ -27,7 +27,7 @@ export default async function Home() {
             <h1 className="text-2xl font-bold text-blue-600">BrightFlow Digital</h1>
             <nav className="hidden space-x-6 md:flex">
               <a href="#services" className="text-gray-600 hover:text-blue-600">
-                Servizi
+                Services
               </a>
               <a href="/api/services" className="text-gray-600 hover:text-blue-600">
                 API
@@ -41,19 +41,19 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Servizi Digitali
-            <span className="block text-blue-600">per il Tuo Successo</span>
+            Digital Services
+            <span className="block text-blue-600">for Your Success</span>
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
-            Consulenza e sviluppo digitale personalizzati per piccole e medie imprese.
-            Trasformiamo le tue idee in soluzioni scalabili e performanti .
+            Customized digital consulting and development for small and medium businesses.
+            We transform your ideas into scalable and high-performance solutions.
           </p>
           <div className="mt-10 flex items-center justify-center gap-4">
             <a
               href="#services"
               className="rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500"
             >
-              Scopri i Servizi
+              Discover Services
             </a>
             <a
               href="/api/services"
@@ -68,9 +68,9 @@ export default async function Home() {
       {/* Services Section */}
       <section id="services" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">I Nostri Servizi</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Our Services</h2>
           <p className="mt-4 text-lg text-gray-600">
-            Soluzioni complete per la tua trasformazione digitale
+            Complete solutions for your digital transformation
           </p>
         </div>
 
@@ -96,16 +96,16 @@ export default async function Home() {
 
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-blue-600">
-                      €{service.price.toLocaleString('it-IT')}
+                      €{service.price.toLocaleString('en-US')}
                     </span>
-                    <span className="text-sm text-gray-500">a partire da</span>
+                    <span className="text-sm text-gray-500">starting from</span>
                   </div>
                 </div>
               </div>
             ))
           ) : (
             <div className="col-span-full text-center text-gray-500">
-              Nessun servizio disponibile al momento
+              No services available at the moment
             </div>
           )}
         </div>
@@ -117,11 +117,11 @@ export default async function Home() {
           <div className="grid gap-8 sm:grid-cols-3">
             <div className="text-center">
               <div className="text-4xl font-bold text-blue-600">{services.length}+</div>
-              <div className="mt-2 text-sm text-gray-600">Servizi Attivi</div>
+              <div className="mt-2 text-sm text-gray-600">Active Services</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-blue-600">99.9%</div>
-              <div className="mt-2 text-sm text-gray-600">Uptime Garantito</div>
+              <div className="mt-2 text-sm text-gray-600">Guaranteed Uptime</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-blue-600">&lt;50ms</div>
@@ -139,10 +139,10 @@ export default async function Home() {
               © 2026 BrightFlow Digital - Francesco di Biase
             </p>
             <div className="flex gap-6 text-sm text-gray-600">
-              <span>Deploy su Vercel Edge Network</span>
+              <span>Deployed on Vercel Edge Network</span>
               <span className="inline-flex items-center gap-1">
                 <span className="h-2 w-2 rounded-full bg-green-500" />
-                Operativo
+                Operational
               </span>
             </div>
           </div>

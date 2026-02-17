@@ -2,8 +2,8 @@ db = db.getSiblingDB('brightflow');
 
 db.services.insertMany([
   {
-    title: 'Consulenza Digitale',
-    description: 'Strategie digitali personalizzate per PMI',
+    title: 'Digital Consulting',
+    description: 'Customized digital strategies for SMEs',
     category: 'consulting',
     price: 1500,
     active: true,
@@ -11,8 +11,8 @@ db.services.insertMany([
     updatedAt: new Date(),
   },
   {
-    title: 'Sviluppo Web',
-    description: 'Siti web e applicazioni su misura',
+    title: 'Web Development',
+    description: 'Custom websites and applications',
     category: 'development',
     price: 3000,
     active: true,
@@ -21,7 +21,7 @@ db.services.insertMany([
   },
   {
     title: 'Marketing Automation',
-    description: 'Automazione processi marketing',
+    description: 'Marketing process automation',
     category: 'marketing',
     price: 2000,
     active: true,
@@ -30,7 +30,7 @@ db.services.insertMany([
   },
   {
     title: 'SEO & Analytics',
-    description: 'Ottimizzazione motori di ricerca e analisi dati',
+    description: 'Search engine optimization and data analysis',
     category: 'marketing',
     price: 1800,
     active: true,
@@ -66,7 +66,7 @@ db.clients.insertMany([
   },
 ]);
 
-print('✅ Database seeded successfully!');
-print('📊 Collections created:');
+print('Database seeded successfully!');
+print('Collections created:');
 print('   - services: ' + db.services.countDocuments() + ' documents');
 print('   - clients: ' + db.clients.countDocuments() + ' documents');
