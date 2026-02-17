@@ -14,7 +14,8 @@
 6. [Environment Variables](#environment-variables)
 7. [Pre-Deploy Testing](#pre-deploy-testing)
 8. [Post-Deploy Monitoring](#post-deploy-monitoring)
-9. [Troubleshooting](#troubleshooting)
+9. [Rollback Procedures](#rollback-procedures)
+10. [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
@@ -368,6 +369,275 @@ Verify headers include:
 - `Strict-Transport-Security`
 - `X-Frame-Options: DENY`
 - `X-Content-Type-Options: nosniff`
+
+## Rollback Procedures
+
+Vercel provides instant rollback capabilities to quickly revert to a previous stable deployment in case of issues.
+
+### When to Perform a Rollback
+
+Consider rollback when:
+- Critical bugs discovered in production
+- Performance degradation detected
+- Security vulnerabilities introduced
+- Database migration issues
+- Breaking changes affecting users
+
+**Note:** For minor issues, prefer hotfixes (quick patches) over rollbacks.
+
+### Method 1: Vercel Dashboard (Recommended - Instant)
+
+**Fastest method for emergency rollbacks:**
+
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Select your project: `brightflow-digital`
+3. Click **Deployments** tab
+4. Find the last stable deployment (marked with green checkmark)
+5. Click the three dots menu (...) on that deployment
+6. Select **"Promote to Production"**
+7. Confirm the action
+
+**Result:** Instant rollback to selected deployment (< 10 seconds)
+
+**Advantages:**
+- Instant (no rebuild required)
+- No code changes needed
+- All deployments preserved
+- Can rollback to any previous deployment
+
+**Limitations:**
+- Environment variables must match
+- Database schema must be compatible
+
+### Method 2: Vercel CLI
+
+**For scripted or automated rollbacks:**
+
+1. **Install Vercel CLI** (if not already installed):
+   ```bash
+   npm i -g vercel
+   vercel login
+   ```
+
+2. **List recent deployments:**
+   ```bash
+   vercel ls brightflow-digital
+   ```
+
+3. **Promote specific deployment to production:**
+   ```bash
+   vercel promote <deployment-url> --scope=<team-name>
+   ```
+
+   Example:
+   ```bash
+   vercel promote brightflow-digital-abc123.vercel.app
+   ```
+
+4. **Verify rollback:**
+   ```bash
+   curl https://brightflow-digital.vercel.app
+   ```
+
+**Advantages:**
+- Scriptable and automatable
+- Can integrate with monitoring alerts
+- Precise control over target deployment
+
+### Method 3: Git Revert
+
+**For permanent code rollback with new deployment:**
+
+1. **Identify problematic commit:**
+   ```bash
+   git log --oneline -10
+   ```
+
+2. **Create revert commit:**
+   ```bash
+   # Revert single commit
+   git revert <commit-hash>
+
+   # Revert range of commits
+   git revert <older-commit>..<newer-commit>
+   ```
+
+3. **Push to main:**
+   ```bash
+   git push origin main
+   ```
+
+4. **Vercel automatically deploys the revert**
+
+**Advantages:**
+- Creates permanent fix in git history
+- Maintains audit trail
+- Triggers full CI/CD validation
+
+**Disadvantages:**
+- Slower (requires rebuild: 2-3 minutes)
+- May cause merge conflicts
+- Requires CI/CD to pass
+
+### Method 4: Git Reset (Use with Caution)
+
+**For forcefully reverting to previous state:**
+
+```bash
+# Reset to previous commit (local only)
+git reset --hard HEAD~1
+
+# Force push to main (requires branch protection override)
+git push origin main --force
+```
+
+**WARNING:** Only use in emergencies. This:
+- Destroys commit history
+- Can cause issues for other developers
+- Bypasses CI/CD checks
+- Requires admin permissions
+
+### Rollback Decision Tree
+
+```
+Critical issue in production?
+│
+├─ YES → Use Vercel Dashboard (Method 1)
+│        └─ Rollback in < 10 seconds
+│
+└─ NO → Minor issue or planned revert?
+         │
+         ├─ Need quick fix → Use Vercel CLI (Method 2)
+         │
+         └─ Permanent fix → Use Git Revert (Method 3)
+                            └─ Full CI/CD validation
+```
+
+### Post-Rollback Actions
+
+After performing a rollback:
+
+1. **Verify application works:**
+   ```bash
+   curl https://brightflow-digital.vercel.app
+   curl https://brightflow-digital.vercel.app/api/services
+   ```
+
+2. **Check Vercel Analytics:**
+   - Monitor error rates
+   - Verify traffic normalization
+   - Check Core Web Vitals
+
+3. **Notify stakeholders:**
+   - Team members
+   - End users (if necessary)
+   - Document incident
+
+4. **Root cause analysis:**
+   - Identify what caused the issue
+   - Document in post-mortem
+   - Update tests to prevent recurrence
+
+5. **Plan forward fix:**
+   - Create hotfix branch
+   - Fix the issue properly
+   - Deploy through normal CI/CD
+
+### Rollback Best Practices
+
+**Before Rollback:**
+- Verify the issue is not caused by external factors (DNS, CDN, database)
+- Check if environment variables changed
+- Review recent deployments timeline
+- Identify last known good deployment
+
+**During Rollback:**
+- Use Vercel Dashboard for fastest rollback
+- Document which deployment you're rolling back to
+- Notify team immediately
+- Monitor metrics during rollback
+
+**After Rollback:**
+- Keep problematic deployment for analysis
+- Don't delete failed deployments
+- Create post-mortem document
+- Update monitoring/alerts if needed
+
+### Testing Rollback (Staging)
+
+Practice rollback on preview environment:
+
+1. **Deploy to develop branch:**
+   ```bash
+   git checkout develop
+   git push origin develop
+   ```
+
+2. **Trigger intentional "issue":**
+   - Deploy with breaking change
+   - Note the deployment URL
+
+3. **Practice rollback:**
+   - Use Vercel Dashboard to promote previous preview
+   - Verify preview environment recovers
+
+4. **Document the process:**
+   - Time taken
+   - Steps followed
+   - Issues encountered
+
+### Rollback Monitoring
+
+After rollback, monitor these metrics for 15-30 minutes:
+
+**Vercel Analytics:**
+- Error rate (should decrease)
+- Page load time (should normalize)
+- 404/500 errors (should reduce)
+
+**Application Health:**
+```bash
+# Continuous monitoring
+watch -n 5 'curl -s -o /dev/null -w "%{http_code}\n" https://brightflow-digital.vercel.app'
+```
+
+**Database Connectivity:**
+```bash
+# Test API endpoint
+curl https://brightflow-digital.vercel.app/api/services | jq '.success'
+```
+
+### Emergency Contacts
+
+In case of rollback issues:
+
+1. **Vercel Support:** support@vercel.com
+2. **GitHub Support:** support@github.com
+3. **MongoDB Atlas:** https://support.mongodb.com
+
+### Rollback Checklist
+
+**Pre-Rollback:**
+- [ ] Issue confirmed in production
+- [ ] Last stable deployment identified
+- [ ] Team notified
+- [ ] Stakeholders informed (if needed)
+- [ ] Rollback method chosen
+
+**During Rollback:**
+- [ ] Rollback initiated via chosen method
+- [ ] New deployment URL verified
+- [ ] Basic functionality tested
+- [ ] API endpoints responding
+- [ ] Database connectivity confirmed
+
+**Post-Rollback:**
+- [ ] Full application testing completed
+- [ ] Analytics checked (error rates normal)
+- [ ] Users notified (if applicable)
+- [ ] Incident documented
+- [ ] Root cause analysis scheduled
+- [ ] Forward fix planned
 
 ## Troubleshooting
 
